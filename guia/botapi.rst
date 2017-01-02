@@ -23,7 +23,7 @@ Luego el comando /newbot
 
 .. figure:: ../images/3.png
 
-Le damos un nombre al bot
+Le damos /newbot y un nombre al bot
 
 .. figure:: ../images/4.png
 
@@ -91,7 +91,7 @@ Obtenemos nuevamente la lectura del chat con el Bot, como veran ahi se vera todo
 	"message":{"message_id":1,"from":{"id":294405920,"first_name":"Carlos G\u00f3mez"},"chat":{"id":294405920,"first_name":"Carlos G\u00f3mez","type":"private"},"date":1483398504,"text":"/start","entities":[{"type":"bot_command","offset":0,"length":6}]}},{"update_id":355353585,
 	"message":{"message_id":3,"from":{"id":294405920,"first_name":"Carlos G\u00f3mez"},"chat":{"id":294405920,"first_name":"Carlos G\u00f3mez","type":"private"},"date":1483399285,"text":"Muy bien, ahora yo le escribo al Bot desde aqui"}}]}
 
-Ahora un el CURL
+Ahora en el CURL
 +++++++++++++++
 
 Con el comando curl podemos obtener valores del campo "text" con algun script y se me ocurre que tengamos un Raspberry PI y le mandemos valores como numeros y dependiendo de eso activamos el GPIO, como por ejemplo para encender una luz, aire acondicionado, calentador etc::
