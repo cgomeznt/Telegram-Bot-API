@@ -104,8 +104,9 @@ Con el comando curl podemos obtener valores del campo "text" con algun script y 
 
 ::
 
-	$ curl -s  https://api.telegram.org/bot327956367:AAHh4Im0dXwel2zQ3bhz9I5yfHhvS5RuG_0/getupdates | tail -1 | awk  -F":" '{print $12}' | sed "s/}}]}//"
-	"Muy bien, ahora yo le escribo al Bot desde aqui"}}]}
+	$ curl -s  https://api.telegram.org/bot327956367:AAHh4Im0dXwel2zQ3bhz9I5yfHhvS5RuG_0/getupdates | tail -1 | awk  -F":" '{print $12}' | sed "s/}}]}//" | sed "s/\"//g"
+
+	Muy bien, ahora yo le escribo al Bot desde aqui
 
 
 
