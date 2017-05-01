@@ -109,5 +109,10 @@ Con el comando curl podemos obtener valores del campo "text" con algun script y 
 	Muy bien, ahora yo le escribo al Bot desde aqui
 
 
+Ahora si quiere enviar imagenes es.::
+
+	$ /usr/bin/curl -k -s -X POST "https://api.telegram.org/bot327956367:AAHh4Im0dXwel2zQ3bhz9I5yfHhvS5RuG_0/sendPhoto" -F chat_id=-227067077 -F photo="@/tmp/telegram_graph-mio.png"
+
+
 
 
