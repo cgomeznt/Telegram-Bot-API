@@ -1,0 +1,96 @@
+Importante asegurar el funcionamiento del PROXY
+export http_proxy="http://10.132.0.10:8080"
+export https_proxy="http://10.132.0.10:8080"
+export ftp_proxy="http://10.132.0.10:8080"
+
+
+
+Envia mensaje al Grupo
+curl -s --max-time 10 -d "chat_id=-197409308&disable_web_page_preview=1&text=HOLA" https://api.telegram.org/bot339051359:AAGZmadn3il77oFpNl-4Rtist0SAa5s6LVI/sendMessage
+
+
+Envia mensaje al BOT
+curl -s --max-time 10 -d "chat_id=294405920&disable_web_page_preview=1&text=HOLA%0A%0AProbando Envios" https://api.telegram.org/bot339051359:AAGZmadn3il77oFpNl-4Rtist0SAa5s6LVI/sendMessage
+
+COn el script lo envia al grupo
+./telegram -197409308 bien hola
+
+Con el script lo envia al Bot
+./telegram 294405920 bien hola
+
+COmo enviar imagen al grupo
+./telegram-graphic "-197409308" "Mensaje" "Item Graphic:[59211]"
+
+
+
+--------------------------------------------------------------------------
+
+Recuerda que:
+
+<Administracion - Media Type> se debe crear una media y decirle como se llama el script y el script se almacena en "/usr/lib/zabbix/alertscripts/usr/lib/zabbix/alertscripts" en el servidor ZABBIX
+
+<Configuracion - Action> se debe crear una accion donde se debe manejar este criterio, El caracter "-" es el que nos va permitir dentro del scrtip poder ubicar el ID del Grafico.
+el caracter "#" lo utilizamos para que en el script lo pueda sustituir por "%0A" que en la URL siginifica nueva linea
+
+Este es un ejemplo.
+
+Evento en el servidor {HOST.NAME1} -
+ {TRIGGER.NAME}: {ITEM.VALUE1} # 
+#
+- Servidor: {HOST.NAME1} #
+- Trigger: {TRIGGER.NAME} #
+- Trigger status: {TRIGGER.STATUS} #
+- Trigger severity: {TRIGGER.SEVERITY}#
+# 
+- Nombre del Item: {ITEM.NAME1} #
+- Servidor: {HOST.NAME1} #
+- Clave: {ITEM.KEY1}) #
+- Valor: {ITEM.VALUE1} #
+#
+- Original event ID: {EVENT.ID} #
+#
+? - Item Graphic:[{ITEM.ID1}]
+
+
+En el tab de <Condicion> ahi mismo en <Configuracion - Action> agregamos esta configuracion.
+
+Type of calculation (A or B or C or D) and (E or F)
+
+Label	Name	Action
+(A)	Trigger severity = Disaster	Remove
+(B)	Trigger severity = High	Remove
+(C)	Trigger severity = Warning	Remove
+(D)	Trigger severity = Information	Remove
+(E)	Host group = Sop App	Remove
+(F)	Host group = Linux_Servers	Remove
+
+
+Por ultimo tambien en <Configuracion - Action> en el tab de <Operations> agregamos que el usuario "Telegram" solo envie a la media "Telegram"
+
+Send message to users: Telegram (telegram) via Telegram Graphic Immediately	Default
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------
+
+Para el reporte que se manda para sudeban es, <Administracion - Media Type> 
+
+Reporte Estatus:
+#
+#
+Servidor: {IST1:system.hostname.last()}
+#
+E: {IST1:event.ist.last()} B: {IST1:buffer_used.ist.last()} C: {IST1:queue.ist.last()} 
+#
+TX: {IST1:transac.ist.last()}
+#
+? - Item Graphic:[{ITEM.ID1}]

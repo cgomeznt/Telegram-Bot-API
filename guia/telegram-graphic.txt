@@ -1,0 +1,157 @@
+#!/bin/bash
+
+##########################################################################
+# Zabbix-Telegram envio de alerta por Telegram com graficos dos eventos
+# Filename: zabbix-telegram.sh
+# Revision: 2.2
+# Date: 07/02/2017
+# Author: Diego Maia - diegosmaia@yahoo.com.br Telegram - @diegosmaia
+# Aproveitei algumas coisas:
+# Script getItemGraph.sh Author: Qicheng
+# https://github.com/GabrielRF/Zabbix-Telegram-Notification @GabrielRF
+# Este es el link de donde encontre el script
+# https://github.com/diegosmaia/zabbix-telegram
+# Obs.: Caso esqueci de alguem, por favor, me chame no Telegram que adiciono
+# Modificado por: Carlos Gomez Gomez
+##########################################################################
+
+MAIN_DIRECTORY="/usr/lib/zabbix/alertscripts/"
+
+USER=$1
+SUBJECT=$2
+SUBJECT="${SUBJECT//,/ }"
+MESSAGE="chat_id=${USER}&text=$3"
+GRAPHID=$3
+#############################################
+# El siguiente valor va depender de como se escribiera en "Configuracion - Action - Nombre de la Accion" esto es
+# en la consola o WEB del ZABBIX  el Default message. es este caso utilizamos el caracter "-"para separar y el caracter "#"
+# para remplazarlo por nuevas lineas
+#############################################
+GRAPHID=$(echo $GRAPHID | awk -F"?" '{print $2}' | awk -F":" '{print $2}' | tr -d "[,]")
+ITEMID=$GRAPHID
+ZABBIXMSG="/tmp/zabbix-message-$(date "+%Y.%m.%d-%H.%M.%S").tmp"
+
+export http_proxy="http://10.132.0.10:8080"
+export https_proxy="http://10.132.0.10:8080"
+export ftp_proxy="http://10.132.0.10:8080"
+
+# echo "Probando echo"
+# echo $GRAPHID
+# echo $ITEMID
+
+#############################################
+# Utilizamos en en "Configuracion - Action - Nombre de la Accion" esto es
+# en la consola o WEB del ZABBIX  el Default message. utilizamos el caracter "#"
+# para remplazarlo por nuevas lineas
+#############################################
+BODYMSG="$3"
+BODYMSG=$(echo $BODYMSG | sed 's/\#/\%0A/g')
+
+#############################################
+# Endereçdo Zabbix
+#############################################
+ZBX_URL="https://10.133.0.54"
+
+##############################################
+# Conta de usuáo para logar no site Zabbix
+##############################################
+
+USERNAME="carlos.gomez"
+PASSWORD="Oceano.21"
+
+############################################
+# O Bot-Token do exemplo, tem que modificar
+############################################
+
+BOT_TOKEN='339051359:AAGZmadn3il77oFpNl-4Rtist0SAa5s6LVI'
+
+#############################################
+# Se nao desejar enviar GRAFICO / ENVIA_GRAFICO = 0
+# Se nao desejar enviar MESSAGE / ENVIA_MESSAGE = 0
+#############################################
+
+ENVIA_GRAFICO=1
+ENVIA_MESSAGE=1
+
+# Se nãreceber o valor de GRAPHID ele seta o valor de ENVIA_GRAFICO para 0
+
+case $GRAPHID in
+        ''|*[!0-9]*) ENVIA_GRAFICO=0 ;;
+esac
+
+
+##############################################
+# Graficos
+##############################################
+
+WIDTH=600
+CURL="/usr/bin/curl"
+COOKIE="/tmp/telegram_cookie-$(date "+%Y.%m.%d-%H.%M.%S")"
+PNG_PATH="/tmp/telegram_graph-$(date "+%Y.%m.%d-%H.%M.%S").png"
+
+############################################
+# Periodo do grafico em minutos Exp: 10800min/3600min=3h
+############################################
+
+PERIOD=10800
+
+
+###########################################
+# Verifica se foi passado os 3 parametros
+# para o script
+###########################################
+
+if [ "$#" -lt 3 ]
+then
+        exit 1
+fi
+
+############################################
+# Envio dos graficos
+############################################
+
+# Se ENVIA_GRAFICO=1 ele envia o gráco.
+if [ $(($ENVIA_GRAFICO)) -eq '1' ]; then
+        ############################################
+        # Zabbix logando com o usuáo no site
+        ############################################
+
+        # Zabbix - Ingles - Verifique no seu Zabbix se na tela de login se o botao de login éSign in".
+        # Obs.: Caso queira mudar, abra a configuraç do usuáo Guest e mude a linguagem para Portugues, se fizer isso comente (#) a linha abaixo e descomente a linha Zabbix-Portugues.
+
+                ${CURL} -k -s -c ${COOKIE} -b ${COOKIE} -d "name=${USERNAME}&password=${PASSWORD}&autologin=1&enter=Sign%20in" ${ZBX_URL}"/index.php" # > /dev/null
+
+        # Download do gráco e envio
+               ${CURL} -k -s -c ${COOKIE}  -b ${COOKIE} -d "itemids=${GRAPHID}&itemid=${ITEMID}&period=${PERIOD}&width=${WIDTH}" ${ZBX_URL}"/chart.php" -o "${PNG_PATH}";
+
+${CURL} -s --max-time 10 -d "chat_id="${USER}"&disable_web_page_preview=1&text=$BODYMSG" https://api.telegram.org/bot${BOT_TOKEN}/sendMessage
+
+        ${CURL} -k -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto" -F chat_id="${USER}" -F photo="@${PNG_PATH}"  # > /dev/null
+
+fi
+
+############################################
+# DEBUG
+############################################
+
+# Verificar valores recebidos do Zabbix ou do prompt
+# cat /tmp/telegram-debug.txt
+# echo "User-Telegram=$USER | Subject=$SUBJECT | Menssage=$MESSAGE | GraphID=${GRAPHID} | Period=${PERIOD} | Width=${WIDTH}" >/tmp/telegram-debug.txt
+
+# Teste com curl tentando baixar o gráco
+# Verifique o arquivo /tmp/telegram-graph.png no seu computador para ver se o grafico esta sendo gerado corretamente
+# ${CURL} -k -c ${COOKIE}  -b ${COOKIE} -d "graphid=1459&itemids=1459&period=10800&width=800" 192.168.10.24/zabbix/chart.php > /tmp/telegram-graph.png
+
+#Verificando o envio da msg
+
+############################################
+# Apagando os arquivos utilizados no script
+############################################
+
+rm -f ${COOKIE}
+
+rm -f ${PNG_PATH}
+
+# Desabilita se precisar verificar o arquivo /tmp/zabbix-message-{datetime}.tmp, ele contem os dados enviados pelo Zabbix
+rm -f ${ZABBIXMSG}
+exit 0
