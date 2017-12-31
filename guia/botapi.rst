@@ -7,7 +7,7 @@ Telegram en una de sus ultimas actualizaciones lanzo una API para interactuar co
 
 Aquí vamos a crear un Bot en su mas mínima expresión:
 
-Lo primero que haremos es intalar y configurar una cuenta de Telegram en nuestro celular.
+Lo primero que haremos es instalar y configurar una cuenta de Telegram en nuestro celular.
 
 Al tener instalado telegram, vamos a llamar desde el al padre de los Bots que es @botfarher
 
@@ -94,7 +94,7 @@ Obtenemos nuevamente la lectura del chat con el Bot, como veran ahi se vera todo
 Ahora en el CURL
 +++++++++++++++
 
-Con el comando curl podemos obtener valores del campo "text" con algun script y se me ocurre que tengamos un Raspberry PI y le mandemos valores como numeros y dependiendo de eso activamos el GPIO, como por ejemplo para encender una luz, aire acondicionado, calentador etc::
+Con el comando curl podemos obtener valores del campo "text" con algún script y se me ocurre que tengamos un Raspberry PI y le mandemos valores como números y dependiendo de eso activamos el GPIO, como por ejemplo para encender una luz, aire acondicionado, calentador etc::
 
 	$ curl  https://api.telegram.org/bot327956367:AAFPQhdnb_WA5f9T9I2Cx3LoQveLbnMHWKY/getupdates
 
@@ -109,7 +109,7 @@ Con el comando curl podemos obtener valores del campo "text" con algun script y 
 	Muy bien, ahora yo le escribo al Bot desde aqui
 
 
-Ahora si quiere enviar imagenes es.::
+Ahora si quiere enviar imágenes es.::
 
 	$ /usr/bin/curl -k -s -X POST "https://api.telegram.org/bot327956367:AAHh4Im0dXwel2zQ3bhz9I5yfHhvS5RuG_0/sendPhoto" -F chat_id=-227067077 -F photo="@/tmp/telegram_graph-mio.png"
 
