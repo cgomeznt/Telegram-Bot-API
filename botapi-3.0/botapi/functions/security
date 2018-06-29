@@ -1,0 +1,29 @@
+function userAuthorized {
+    grep -w "$message_from_id" ./security/authorized.md | wc -l
+}
+
+function commandNoAuthorized {
+    if [ -f "./security/$message_from_id.md" ] ; then
+       msgtmp=`echo $message_text | tr -d "\"" | awk '{print $1}'`
+       if [ `grep -w "$msgtmp" ./security/$message_from_id.md | wc -l` -ge 1 ] ; then
+          echo 0
+       else
+          echo 1
+       fi
+    else
+       echo 1
+    fi
+}
+
+function getIdAuthorized {
+   if [ `userAuthorized` -eq 0 ] ; then
+       logsError
+       ruta_filetmp=`modifyMessages $ruta_noAuthorized`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       rm -f $ruta_filetmp
+       sw=0
+   else
+       sw=1
+   fi
+   echo "$sw"
+}

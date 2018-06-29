@@ -1,0 +1,73 @@
+
+function modifyMessages {
+   datetmp=`date +%Y%m%d%M%S`
+   cp  $1 ./tmp/file$datetmp.tmp
+   sed -i -e 's/ /%20/g' ./tmp/file$datetmp.tmp
+   for i in `cat ./tmp/file$datetmp.tmp | grep -v \#`
+   do
+      varMM=$varMM`echo -e "$i%0A"`
+   done
+   echo $varMM > ./tmp/file$datetmp.tmp
+   echo "./tmp/file$datetmp.tmp"
+}
+
+function poblarVarBasic {
+   #Getme
+   id_bot=`getIdBot`
+   is_bot=`getIsBot` 
+   namebot=`getNameBot`
+   usernamebot=`getUsernameBot`
+   
+   #Getupdates
+   update_id=`getUpdateId`
+   message_from_id=`getMessageFromId`
+   message_from_is_bot=`getMessageFromIsBot`
+   message_from_first_name=`getMessageFromFirstName`
+   message_from_language_code=`getMessageFromLanguageCode`
+   message_chat_id=`getMessageChatId`
+   message_chat_title=`getMessageChatTitle`
+   message_chat_type=`getMessageChatType`
+   message_chat_all_admin=`getMessageChatAllMembersAreAdmon`
+   #GetDate
+   message_date=`getMessageDate`
+   datemessagehuman=`date --date @"$message_date"`
+   #Gettext
+   message_text=`getMessageText`
+}
+
+function poblarVarWebhookInfo {
+   #GetWebhookInfo
+   pending_update_count=`getPendingUpdateCount`
+}
+
+function showVar {
+   echo -e "#####################################"
+   echo -e "# WS del getme"
+   echo -e "#####################################"
+   echo -e "id_bot:$id_bot"
+   echo -e "is_bot:$is_bot"
+   echo -e "namebot:$namebot"
+   echo -e "usernamebot:$usernamebot"
+   echo -e "#####################################"
+   echo -e "# WS del getupdates"
+   echo -e "#####################################"
+   echo -e "update_id:$update_id"
+   #echo -e "message_id:$message_id"
+   echo -e "message_from_id:$message_from_id"
+   echo -e "message_from_is_bot:$message_from_is_bot"
+   echo -e "message_from_first_name:$message_from_first_name"
+   echo -e "message_from_language_code:$message_from_language_code"
+   echo -e "message_chat_id:$message_chat_id"
+   echo -e "message_chat_title:$message_chat_title"
+   echo -e "message_chat_type:$message_chat_type"
+   echo -e "message_chat_all_admin:$message_chat_all_admin"
+   echo -e "message_date:$message_date"
+   datemessagehuman=`date --date @"$message_date"`
+   #echo -e "datemessagehuman:$datemessagehuman"
+   echo -e "message_text:$message_text"
+   echo -e "#####################################"
+   echo -e "# WS del getWebhookInfo"
+   echo -e "#####################################"
+   echo -e "pending_update_count:$pending_update_count"
+   echo -e "#####################################"
+}

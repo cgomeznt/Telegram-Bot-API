@@ -1,0 +1,229 @@
+
+function portStatusValidation {
+   secondarg=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+   if [ ! -z $secondarg ] ; then
+       # "Si tiene el puerto\n"
+       sw=1
+   varportSV=`echo $message_text | tr -d "\"" |  awk '{print $2}'`
+   if [ `cat $port_list | grep -v \# | grep $varportSV | wc -l` -eq 0 ] ; then
+       # "No esta en el archivo port.list $varportSV\n"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_port_error`
+       sendMessageBot $message_chat_id "`cat $ruta_filetmp`+El+puerto+no+esta+en+el+archivo" > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi
+   else 
+       # "Error no tiene el puerto\n"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_port_error`
+       sendMessageBot $message_chat_id "`cat $ruta_filetmp`+No+coloco+el+puerto" > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi      
+   echo "$sw"
+}
+
+function listBranchValidation {
+   secondarg=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+   if [ ! -z $secondarg ] ; then
+       # echo "Si colocaron el cliente"
+       sw=1
+       varBranchV=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+       ls $ruta_workspace/$varBranchV  &> /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+           sendMessageBot $message_chat_id "`cat $ruta_filetmp`" > /dev/null
+       	   rm $ruta_filetmp
+           sw=0
+       fi
+   else 
+       # echo "Error no tiene el cliente"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_client` 
+       sendMessageBot $message_chat_id "`cat $ruta_filetmp`+No+coloco+el+cliente" > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi      
+   echo "$sw"
+}
+
+function listPortValidation {
+   # Este valida que colocaran el Usuario
+   secondarg=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+   if [ ! -z $secondarg ] ; then
+       # echo "Si tiene el cliente"
+       sw=1
+       cliente=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+       ls $ruta_workspace/$cliente &> /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+           sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+       	   rm $ruta_filetmp
+           sw=0
+       fi
+   else 
+       # echo "Error no tiene el cliente"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_client` 
+       sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi      
+   # Este valida que colocaran el Branch
+   tercerarg=`echo $message_text | tr -d "\"" | awk '{print $3}'`
+   if [ ! -z $tercerarg ] ; then
+       # echo "Si tiene el branch"
+       sw=1
+       cliente=`echo $message_text | awk '{print $2}'`
+       branch=`echo $message_text | awk '{print $3}'`
+       ls $ruta_workspace/$cliente/$branch &> /dev/null 
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+           sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+           rm $ruta_filetmp
+           sw=0
+       fi
+   else 
+       # echo "Error no tiene el branch"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_branch` 
+       sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi
+   echo "$sw"
+}
+
+function gitPathValidation {
+   # Este valida que colocaran el Usuario
+   secondarg=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+   if [ ! -z $secondarg ] ; then
+       # echo "Si tiene el cliente"
+       sw=1
+       cliente=`echo $message_text | awk '{print $2}'`
+       ls $ruta_workspace/$cliente &> /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+           sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+           rm $ruta_filetmp
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el cliente"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+       sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi
+   # Este valida que colocaran el Branch
+   tercerarg=`echo $message_text | tr -d "\"" | awk '{print $3}'`
+   if [ ! -z $tercerarg ] ; then
+       # echo "Si tiene el branch"
+       sw=1
+       cliente=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+       branch=`echo $message_text | tr -d "\"" | awk '{print $3}'`
+       ls $ruta_workspace/$cliente/$branch &> /dev/null
+       if [ ! $? -eq 0 ] ; then
+	echo "tercerarg $tercerarg, varGitInfoV $varGitInfoV varGitInfoIV $varGitInfoIV" > ./tmp/validar
+           ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+           sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+           rm $ruta_filetmp
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el branch"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+       sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi
+   echo "$sw"
+}
+
+
+function makeValidation {
+   if [ `echo $message_text | tr -d "\"" | awk '{print $2}'` ] ; then
+       # echo "Si tiene el cliente"
+       sw=1
+       cliente=`echo $message_text | awk '{print $2}'`
+       ls $ruta_workspace/$cliente &> /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+           sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+           rm $ruta_filetmp
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el cliente"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+       sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi
+   if [ `echo $message_text | tr -d "\"" | awk '{print $3}'` ] ; then
+       # echo "Si tiene el branch"
+       sw=1
+       cliente=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+       branch=`echo $message_text | tr -d "\"" | awk '{print $3}'`
+       ls $ruta_workspace/$cliente/$branch &> /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+           sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+           rm $ruta_filetmp
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el branch"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+       sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi
+   if [ `echo $message_text | tr -d "\"" | awk '{print $4}'` ] ; then
+       # echo "Si tiene el puerto"
+       sw=1
+       cliente=`echo $message_text | awk '{print $2}'`
+       branch=`echo $message_text | awk '{print $3}'`
+       puerto=`echo $message_text | awk '{print $4}'`
+       ls $ruta_workspace/$cliente/$branch/scm/Make_EAR/*$puerto &> /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_port`
+           sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+           rm $ruta_filetmp
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el puerto"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_port`
+       sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi
+   echo "$sw"
+}
+
+function assignTicketValidation  {
+   # Este valida que colocaran el Ticket 
+   secondarg=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+   if [ ! -z $secondarg ] ; then
+       # echo "Si tiene el Ticket"
+       sw=1
+       ticket=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+   else 
+       # echo "Error no tiene el Ticket"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_ticket` 
+       sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi      
+   # Este valida que colocaran el Usuario
+   tercerarg=`echo $message_text | tr -d "\"" | awk '{print $3}'`
+   if [ ! -z $tercerarg ] ; then
+       # echo "Si tiene el usuario"
+       sw=1
+   else 
+       # echo "Error no tiene el Usuario"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_usuario` 
+       sendMessageBot $message_chat_id `cat $ruta_filetmp` > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi
+   echo "$sw"
+}
+
