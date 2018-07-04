@@ -1,0 +1,14 @@
+
+
+function logsInfo {
+    echo -e "INFO $dateMessage,  ID_BOT $id_bot, NAME_BOT $namebot, USERNAME $usernamebot, ID_USER $id_user, USER_NAME $first_name, MENSSAGE \"$textMessage\"" >> $botAPI
+}
+
+function logsWarn {
+    echo -e "WARNING $dateMessage,  ID_BOT $id_bot, NAME_BOT $namebot, USERNAME $usernamebot, ID_USER $id_user, USER_NAME $first_name, MENSSAGE \"$textMessage\"" >> $botAPI
+}
+
+function logsError {
+    echo -e "ERROR $dateMessage,  ID_BOT $id_bot, NAME_BOT $namebot, USERNAME $usernamebot, ID_USER $id_user, USER_NAME $first_name, MENSSAGE \"$textMessage\"" >> $botAPI
+}
+

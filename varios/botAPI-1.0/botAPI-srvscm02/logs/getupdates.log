@@ -1,0 +1,2 @@
+{"ok":true,"result":[{"update_id":949223793,
+"message":{"message_id":1102,"from":{"id":353352741,"is_bot":false,"first_name":"Derwin"},"chat":{"id":-284060763,"title":"srvscm02_GROUPBot","type":"group","all_members_are_administrators":true},"date":1527730677,"text":"/help","entities":[{"offset":0,"length":5,"type":"bot_command"}]}}]}

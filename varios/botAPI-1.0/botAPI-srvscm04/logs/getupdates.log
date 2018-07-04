@@ -1,0 +1,2 @@
+{"ok":true,"result":[{"update_id":598229299,
+"message":{"message_id":335,"from":{"id":353352741,"is_bot":false,"first_name":"Derwin"},"chat":{"id":-186667231,"title":"srvscm04_GROUPBot","type":"group","all_members_are_administrators":true},"date":1527730759,"text":"/port_status 7045","entities":[{"offset":0,"length":12,"type":"bot_command"}]}}]}

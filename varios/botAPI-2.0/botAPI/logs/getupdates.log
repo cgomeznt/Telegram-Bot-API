@@ -1,0 +1,2 @@
+{"ok":true,"result":[{"update_id":598229578,
+"message":{"message_id":952,"from":{"id":294405920,"is_bot":false,"first_name":"Carlos Gomez G","language_code":"es-419"},"chat":{"id":-186667231,"title":"srvscm04_GROUPBot","type":"group","all_members_are_administrators":true},"date":1527826506,"text":"/port_status 7035","entities":[{"offset":0,"length":12,"type":"bot_command"}]}}]}

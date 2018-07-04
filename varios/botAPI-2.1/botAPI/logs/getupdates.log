@@ -1,0 +1,2 @@
+{"ok":true,"result":[{"update_id":949223919,
+"message":{"message_id":1449,"from":{"id":294405920,"is_bot":false,"first_name":"Carlos Gomez G","language_code":"es-419"},"chat":{"id":-284060763,"title":"srvscm02_GROUPBot","type":"group","all_members_are_administrators":true},"date":1528307491,"text":"/make_schematool ALFA FE-ALFA-20180511 CL","entities":[{"offset":0,"length":16,"type":"bot_command"}]}}]}

@@ -1,0 +1,250 @@
+
+function portStatusValidation {
+   if [ `echo $textMessage | awk '{print $2}'` ] ; then
+       # echo "Si tiene el puerto"
+       sw=1
+   else 
+       # echo "Error no tiene el puerto"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_port_error`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       rm $ruta_filetmp
+       sw=0
+   fi      
+   varportSV=`echo $textMessage | awk '{print $2}'`
+   if [ `grep -v \# $port_list | grep $varportSV | wc -l` -eq 0 ] ; then
+       ruta_filetmp=`modifyMessages $ruta_no_exist_port_error`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+
+   echo "$sw"
+}
+
+
+function portStartValidation {
+   if [ `echo $textMessage | awk '{print $2}'` ] ; then
+       echo "Si tiene el puerto"
+       sw=1
+   else 
+       echo "Error no tiene el puerto"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_port_error`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi      
+   varportStartV=`echo $textMessage | awk '{print $2}'`
+   if [ `grep -v \# $port_list | grep $varportStartV | wc -l` -eq 0 ] ; then
+       ruta_filetmp=`modifyMessages $ruta_no_exist_port_error`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+   echo "$sw"
+}
+
+
+function portStopValidation {
+   if [ `echo $textMessage | awk '{print $2}'` ] ; then
+       # echo "Si tiene el puerto"
+       sw=1
+   else 
+       # echo "Error no tiene el puerto"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_port_error`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi      
+   varportStopV=`echo $textMessage | awk '{print $2}'`
+   if [ `grep -v \# $port_list | grep $varportStopV | wc -l` -eq 0 ] ; then
+       ruta_filetmp=`modifyMessages $ruta_no_exist_port_error`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+
+   echo "$sw"
+}
+
+
+function listBranchValidation {
+   if [ `echo $textMessage | awk '{print $2}'` ] ; then
+       # echo "Si tiene el cliente"
+       sw=1
+       varBranchV=`echo $textMessage | awk '{print $2}'`
+       ls $ruta_workspace/$varBranchV > 2&>1 /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+           sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+           sw=0
+       fi
+   else 
+       # echo "Error no tiene el cliente"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_client` 
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi      
+   echo "$sw"
+}
+
+function listPortValidation {
+   if [ `echo $textMessage | awk '{print $2}'` ] ; then
+       # echo "Si tiene el cliente"
+       sw=1
+       varPortV=`echo $textMessage | awk '{print $2}'`
+       ls $ruta_workspace/$varPortV > 2&>1 /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+           sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+           sw=0
+       fi
+   else 
+       # echo "Error no tiene el cliente"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_client` 
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi      
+   if [ `echo $textMessage | awk '{print $3}'` ] ; then
+       # echo "Si tiene el branch"
+       sw=1
+       varPortV=`echo $textMessage | awk '{print $2}'`
+       varPortIV=`echo $textMessage | awk '{print $3}'`
+       ls $ruta_workspace/$varPortV/$varPortIV > 2&>1 /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+           sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+           sw=0
+       fi
+   else 
+       # echo "Error no tiene el branch"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_branch` 
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+   echo "$sw"
+}
+
+function gitInfoValidation {
+   if [ `echo $textMessage | awk '{print $2}'` ] ; then
+       # echo "Si tiene el cliente"
+       sw=1
+       varGitInfoV=`echo $textMessage | awk '{print $2}'`
+       ls $ruta_workspace/$varGitInfoV > 2&>1 /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+           sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el cliente"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+   if [ `echo $textMessage | awk '{print $3}'` ] ; then
+       # echo "Si tiene el branch"
+       sw=1
+       varGitInfoV=`echo $textMessage | awk '{print $2}'`
+       varGitInfoIV=`echo $textMessage | awk '{print $3}'`
+       ls $ruta_workspace/$varGitInfoV/$varGitinfoIV > 2&>1 /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+           sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el branch"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+   echo "$sw"
+}
+
+function gitUpdateValidation {
+   if [ `echo $textMessage | awk '{print $2}'` ] ; then
+       # echo "Si tiene el cliente"
+       sw=1
+       varGitUpdateV=`echo $textMessage | awk '{print $2}'`
+       ls $ruta_workspace/$varGitUpdateV > 2&>1 /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+           sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el cliente"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+   if [ `echo $textMessage | awk '{print $3}'` ] ; then
+       # echo "Si tiene el branch"
+       sw=1
+       varGitUpdateV=`echo $textMessage | awk '{print $2}'`
+       varGitUpdateIV=`echo $textMessage | awk '{print $3}'`
+       ls $ruta_workspace/$varGitUpdateV/$varGitUpdateIV > 2&>1 /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+           sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el branch"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+   echo "$sw"
+}
+
+function makeValidation {
+   if [ `echo $textMessage | awk '{print $2}'` ] ; then
+       # echo "Si tiene el cliente"
+       sw=1
+       varMakeV=`echo $textMessage | awk '{print $2}'`
+       ls $ruta_workspace/$varMakeV > 2&>1 /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+           sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el cliente"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_client`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+   if [ `echo $textMessage | awk '{print $3}'` ] ; then
+       # echo "Si tiene el branch"
+       sw=1
+       varMakeV=`echo $textMessage | awk '{print $2}'`
+       varMakeIV=`echo $textMessage | awk '{print $3}'`
+       ls $ruta_workspace/$varMakeV/$varMakeIV > 2&>1 /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+           sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el branch"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_branch`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+   if [ `echo $textMessage | awk '{print $4}'` ] ; then
+       # echo "Si tiene el puerto"
+       sw=1
+       varMakeV=`echo $textMessage | awk '{print $2}'`
+       varMakeIV=`echo $textMessage | awk '{print $3}'`
+       varMakeIIV=`echo $textMessage | awk '{print $4}'`
+       ls $ruta_workspace/$varMakeV/$varMakeIV/scm/Make_EAR/*$varMakeIIV > 2&>1 /dev/null
+       if [ ! $? -eq 0 ] ; then
+           ruta_filetmp=`modifyMessages $ruta_no_exist_port`
+           sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+           sw=0
+       fi
+   else
+       # echo "Error no tiene el puerto"
+       ruta_filetmp=`modifyMessages $ruta_no_exist_port`
+       sendMessageBot $id_chat `cat $ruta_filetmp` > /dev/null
+       sw=0
+   fi
+   echo "$sw"
+}
+

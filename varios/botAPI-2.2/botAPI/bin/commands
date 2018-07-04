@@ -1,0 +1,138 @@
+
+function modifyMessages {
+   filetmp=`date +%Y%m%d%M%S`
+   cp  $1 ./tmp/.file$filetmp.tmp
+   sed -i -e 's/ /%20/g' ./tmp/.file$filetmp.tmp
+   for i in `cat ./tmp/.file$filetmp.tmp | grep -v \#`
+   do
+      varMM=$varMM`echo -e "$i%0A"`
+   done
+   echo $varMM > ./tmp/.file$filetmp.tmp
+   echo "./tmp/.file$filetmp.tmp"
+}
+
+function poblarVar {
+   #Getme
+   id_bot=`getIdBot`
+   namebot=`getNameBot`
+   usernamebot=`getUsernameBot`
+   
+   #Getupdates
+   update_id=`getUpdateId`
+   message_id=`getMessageId`
+   first_name=`getFirstName`
+   id_user=`getIdUser`
+   id_chat=`getIdChat`
+   dateMessage=`getDate`
+   textMessage=`getText`
+
+   #GetWebhookInfo
+   pending_update_count=`getPendingUpdateCount`
+   id_pending_update=`getUpdateIdPending`
+}
+
+function clearVar {
+   #Getme
+   unset id_bot
+   unset namebot
+   unset usernamebot
+
+   #Getupdates
+   unset update_id
+   unset message_id
+   unset first_name
+   unset id_user
+   unset id_chat
+   unset dateMessage
+   unset textMessage
+
+   #GetWebhookInfo
+   unset pending_update_count
+   unset id_pending_update
+}
+
+function showVar {
+   echo -e "WS del getme"
+   echo -e "id del bot = $id_bot"
+   echo -e "Name del bot = $namebot"
+   echo -e "UserName del bot = $usernamebot"
+   echo -e "WS del getupdates"
+   echo -e "Update_id del mensaje = $update_id"
+   echo -e "ID del Message = $message_id"
+   echo -e "First_Name = $first_name"
+   echo -e "ID del usuario = $id_user"
+   echo -e "ID del chat = $id_chat"
+   dateMessage=`date --date @"$dateMessage"`
+   echo -e "Fecha del mensaje = $dateMessage"
+   echo -e "Texto del mensaje = $textMessage"
+   echo -e "WS del getWebhookInfo"
+   echo -e "Pending_Update_Count = $pending_update_count"
+   echo -e "ID del Pending Update = $id_pending_update"
+}
+
+
+function portList {
+    echo -e "$id_chat\n port_list.sh\n 1\n 1\n 1" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+function portStatus {
+    puerto=`echo $textMessage | awk '{print $2}'`
+    echo -e "$id_chat\n port_status.sh\n 1\n $puerto\n 1" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+function portStart {
+   echo -e "$id_chat\n port.sh\n start\n $1\n 1" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+
+function portStop {
+   echo -e "$id_chat\n port.sh\n stop\n $1\n 1" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+function listClient {
+   echo -e "$id_chat\n list_client.sh\n 1\n 1\n 1" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+function listBranch {
+   client_tmp=`echo $textMessage | awk '{print $2}'`
+   echo -e "$id_chat\n list_branch.sh\n 1\n $client_tmp\n 1" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+function listPort {
+   client_tmp=`echo $textMessage | awk '{print $2}'`
+   branch_tmp=`echo $textMessage | awk '{print $3}'`
+   echo -e "$id_chat\n list_port.sh\n $client_tmp\n $branch_tmp\n 1" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+function gitInfoScript {
+   client_tmp=`echo $textMessage | awk '{print $2}'`
+   branch_tmp=`echo $textMessage | awk '{print $3}'`
+   echo -e "$id_chat\n git_info.sh\n $client_tmp\n $branch_tmp\n 1" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+function gitUpdateScript {
+   client_tmp=`echo $textMessage | awk '{print $2}'`
+   branch_tmp=`echo $textMessage | awk '{print $3}'`
+   hash_tmp=`echo $textMessage | awk '{print $4}'`
+   echo -e "$id_chat\n git_update.sh\n $client_tmp\n $branch_tmp\n 1" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+function makeScript {
+   client_tmp=`echo $textMessage | awk '{print $2}'`
+   branch_tmp=`echo $textMessage | awk '{print $3}'`
+   port_tmp=`echo $textMessage | awk '{print $4}'`
+   echo -e "$id_chat\n make.sh\n $client_tmp\n $port_tmp\n $branch_tmp" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+function makeSchemaToolScript {
+   client_tmp=`echo $textMessage | awk '{print $2}'`
+   branch_tmp=`echo $textMessage | awk '{print $3}'`
+   port_tmp=`echo $textMessage | awk '{print $4}'`
+   echo -e "$id_chat\n make_schematool.sh\n $client_tmp\n $port_tmp\n $branch_tmp" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}
+
+function assignTicket {
+   ticket_tmp=`echo $textMessage | awk '{print $2}'`
+   user_tmp=`echo $textMessage | awk '{print $3}'`
+   echo -e "$id_chat\n assign_ticket.sh\n $ticket_tmp\n $user_tmp\n 1" | /usr/local/bin/botAPI/scripts/exec_commands.sh&
+}

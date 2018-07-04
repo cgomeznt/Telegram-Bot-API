@@ -1,0 +1,121 @@
+
+####################################################
+# Getme
+####################################################
+
+function getMeBot {
+   curl -s "https://api.telegram.org/bot$tokenbot/getme" > $logsGetmebot
+}
+
+function getIdBot {
+   cat $logsGetmebot | jq '.result.id'
+}
+
+function getIsBot {
+   cat $logsGetmebot | jq '.result.is_bot'
+}
+
+function getNameBot { 
+   cat $logsGetmebot | jq '.result.first_name'
+}
+
+function getUsernameBot {
+    cat $logsGetmebot | jq '.result.username'
+}
+
+####################################################
+# Getupdates
+####################################################
+
+function getUpdatesBot {
+   curl -s https://api.telegram.org/bot$tokenbot/getupdates > $logsGetupdatesbot
+}
+
+# Este es el bloque del update id
+function getUpdateId {
+   cat $logsGetupdatesbot | jq '.result[0].update_id'
+}
+
+# Este es el bloque del message
+function getMessageMessageId {
+   cat $logsGetupdatesbot | jq '.result[0].message.message_id'
+}
+
+function getMessageFromId {
+   cat $logsGetupdatesbot | jq '.result[0].message.from.id'
+}
+
+function getMessageFromIsBot {
+   cat $logsGetupdatesbot | jq '.result[0].message.from.is_bot'
+}
+
+function getMessageFromFirstName {
+   cat $logsGetupdatesbot | jq '.result[0].message.from.first_name'
+}
+
+function getMessageFromLanguageCode {
+   cat $logsGetupdatesbot | jq '.result[0].message.from.language_code'
+}
+
+# Este es el bloque del chat
+function getMessageChatId {
+   cat $logsGetupdatesbot | jq '.result[0].message.chat.id'
+}
+
+function getMessageChatTitle {
+   cat $logsGetupdatesbot | jq '.result[0].message.chat.title'
+}
+
+function getMessageChatType {
+   cat $logsGetupdatesbot | jq '.result[0].message.chat.type'
+}
+
+function getMessageChatAllMembersAreAdmon {
+   cat $logsGetupdatesbot | jq '.result[0].message.chat.all_members_are_administrators'
+}
+
+# Este es el bloque del date
+function getMessageDate {
+   cat $logsGetupdatesbot | jq '.result[0].message.date'
+}
+
+# Este es el bloque del text
+function getMessageText {
+   cat $logsGetupdatesbot | jq '.result[0].message.text'
+}
+
+####################################################
+# Sendmessage
+####################################################
+
+function sendMessageBot {
+   curl -k -s -X POST "https://api.telegram.org/bot$tokenbot/sendmessage?chat_id=$1&text=$2"
+}
+
+
+####################################################
+# SendPhoto
+####################################################
+
+function sendPhotoBot {
+   # Esta funcion aun no la estamos utilizando...!!!
+   curl -k -s -X POST "https://api.telegram.org/bot$tokenbot/sendPhoto" -F chat_id=294405920 -F photo="@./CONSIS.png"
+   echo -e "Function sendPhoto"
+}
+
+
+####################################################
+# getWebhookInfo
+####################################################
+
+function getWebHookInfoBot {
+   curl -k -s -X POST "https://api.telegram.org/bot$tokenbot/getWebhookInfo" > $logsGetWebHookInfobot
+}
+
+function getPendingUpdateCount {
+   cat $logsGetWebHookInfobot |  jq '.result["pending_update_count"]'
+}
+
+function deletePendingUpdate {
+   curl -s "https://api.telegram.org/bot$tokenbot/getupdates?offset=$1" > /dev/null
+}

@@ -1,0 +1,99 @@
+
+
+####################################################
+# Getme
+####################################################
+
+function getMeBot {
+   curl -s "https://api.telegram.org/bot$tokenbot/getme" > $logsGetmebot
+}
+
+function getIdBot {
+   cat $logsGetmebot | jq '.' | grep id | awk -F":" '{print $2}' | tr -d ","
+}
+
+function getNameBot { 
+   cat $logsGetmebot | jq '.' | grep first_name | awk -F":" '{print $2}' | tr -d "," | tr -d "\""
+}
+
+function getUsernameBot {
+    cat $logsGetmebot | jq '.' | grep username | awk -F":" '{print $2}' | tr -d "," | tr -d "\""
+}
+
+####################################################
+# Getupdates
+####################################################
+
+function getUpdatesBot {
+   curl -s https://api.telegram.org/bot$tokenbot/getupdates?offset=$id_pending_update > $logsGetupdatesbot
+}
+
+function getUpdateId {
+   cat $logsGetupdatesbot | jq '.' | grep "update_id" -A1 | grep id | tail -1 | awk -F":" '{print $2}' | tr -d "\,"   
+}
+
+function getMessageId {
+   cat $logsGetupdatesbot | jq '.' | grep "message_id" -A1 | grep id | tail -1 | awk -F":" '{print $2}' | tr -d "\,"  
+}
+
+function getFirstName {
+   cat $logsGetupdatesbot | jq '.' | grep "first_name" | tail -1 | awk -F":" '{print $2}' | tr -d "\," | tr -d "\""
+}
+
+function getIdUser {
+   cat $logsGetupdatesbot | jq '.' | grep from -A1 | grep id | tail -1 | awk -F":" '{print $2}' | tr -d "\,"   
+}
+
+function getIdChat {
+   cat $logsGetupdatesbot | jq '.' | grep chat -A1 | grep id | tail -1 | awk -F":" '{print $2}' | tr -d "\,"   
+}
+
+function getDate {
+   cat logs/getupdates.log | jq '.' | grep -w date | tail -1 | awk -F":" '{print $2}' | tr -d "\,"
+}
+
+function getText {
+   cat logs/getupdates.log | jq '.' | grep text | tail -1 | awk -F":" '{print $2}' | tr -d "\," | tr -d "\""
+}
+
+
+####################################################
+# Sendmessage
+####################################################
+
+function sendMessageBot {
+   curl -k -s -X POST "https://api.telegram.org/bot$tokenbot/sendmessage?chat_id=$1&text=$2"
+   echo -e "Function sendmessagebot"
+}
+
+
+####################################################
+# SendPhoto
+####################################################
+
+function sendPhotoBot {
+   # Esta funcion aun no la estamos utilizando...!!!
+   curl -k -s -X POST "https://api.telegram.org/bot$tokenbot/sendPhoto" -F chat_id=294405920 -F photo="@./CONSIS.png"
+   echo -e "Function sendPhoto"
+}
+
+
+####################################################
+# getWebhookInfo
+####################################################
+
+function getWebHookInfoBot {
+   curl -k -s -X POST "https://api.telegram.org/bot$tokenbot/getWebhookInfo" > $logsGetWebHookInfobot
+}
+
+function getPendingUpdateCount {
+   cat $logsGetWebHookInfobot | jq '.' | grep pending_update_count | awk '{print $2}'
+}
+
+function getUpdateIdPending {
+    cat $logsGetupdatesbot | jq '.' | grep -w update_id | awk '{print $2}' | tr -d "," | tail -1
+}
+
+function deletePendingUpdate {
+   curl -s https://api.telegram.org/bot$tokenbot/getupdates?offset=$id_pending_update > /dev/null
+}

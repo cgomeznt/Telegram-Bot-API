@@ -1,0 +1,176 @@
+
+function modifyMessages {
+   filetmp=`date +%Y%m%d%M%S`
+   cp  $1 ./tmp/.file$filetmp.tmp
+   sed -i -e 's/ /%20/g' ./tmp/.file$filetmp.tmp
+   for i in `cat ./tmp/.file$filetmp.tmp | grep -v \#`
+   do
+      varMM=$varMM`echo -e "$i%0A"`
+   done
+   echo $varMM > ./tmp/.file$filetmp.tmp
+   echo "./tmp/.file$filetmp.tmp"
+}
+
+function poblarVar {
+   #Getme
+   id_bot=`getIdBot`
+   namebot=`getNameBot`
+   usernamebot=`getUsernameBot`
+   
+   #Getupdates
+   update_id=`getUpdateId`
+   message_id=`getMessageId`
+   first_name=`getFirstName`
+   id_user=`getIdUser`
+   id_chat=`getIdChat`
+   dateMessage=`getDate`
+   textMessage=`getText`
+
+   #GetWebhookInfo
+   pending_update_count=`getPendingUpdateCount`
+   id_pending_update=`getUpdateIdPending`
+}
+
+function showVar {
+   echo -e "WS del getme"
+   echo -e "id del bot = $id_bot"
+   echo -e "Name del bot = $namebot"
+   echo -e "UserName del bot = $usernamebot"
+   echo -e "WS del getupdates"
+   echo -e "Update_id del mensaje = $update_id"
+   echo -e "ID del Message = $message_id"
+   echo -e "First_Name = $first_name"
+   echo -e "ID del usuario = $id_user"
+   echo -e "ID del chat = $id_chat"
+   dateMessage=`date --date @"$dateMessage"`
+   echo -e "Fecha del mensaje = $dateMessage"
+   echo -e "Texto del mensaje = $textMessage"
+   echo -e "WS del getWebhookInfo"
+   echo -e "Pending_Update_Count = $pending_update_count"
+   echo -e "ID del Pending Update = $id_pending_update"
+}
+
+
+function portList {
+    grep -v \# $port_list | awk '{print $1}' > $ruta_port_list 
+    varPL=`cat $ruta_port_list`
+    echo $varPL > $ruta_port_list
+    sed -i -e 's/ /\%0A/g' $ruta_port_list
+}
+
+function portStatus {
+    puerto=`echo $textMessage | awk '{print $2}'` 
+    status=`netstat -nat | grep $puerto | wc -l`
+    if [ $status -eq 0 ] ; then
+        # echo "El puerto $puerto, es inaccesible"
+        echo "El puerto $puerto, es inaccesible" > $ruta_port_status
+        sed -i -e 's/ /\%20/g' $ruta_port_status
+    else
+        # echo "El puerto $puerto, esta operativo"
+        echo "El puerto $puerto, esta operativo" > $ruta_port_status
+        sed -i -e 's/ /\%20/g' $ruta_port_status
+    fi
+}
+
+function portStart {
+   $ruta_scripts/port.sh start $1
+   if [ $? -eq 0 ] ; then
+       message_start=`cat $ruta_port_start | grep -v \# | head -1 | sed 's/ /%20/g'`
+       message_start="$message_start%20$1"
+       sendMessageBot $id_chat $message_start 
+   else
+       message_start=`cat $ruta_port_start | grep -v \# | tail -1 | sed 's/ /%20/g'`
+       message_start="$message_start%20$1"
+       sendMessageBot $id_chat $message_start
+   fi
+}
+
+function portStop {
+   $ruta_scripts/port.sh stop $1
+      if [ $? -eq 0 ] ; then
+       message_stop=`cat $ruta_port_stop | grep -v \# | head -1 | sed 's/ /%20/g'`
+       message_stop="$message_stop%20$1"
+       sendMessageBot $id_chat $message_stop
+   else
+       message_stop=`cat $ruta_port_stop | grep -v \# | tail -1 | sed 's/ /%20/g'`
+       message_stop="$message_stop%20$1"
+       sendMessageBot $id_chat $message_stop
+   fi
+}
+
+function listClient {
+   filetmp=`date +%Y%m%d%M%S`
+   for i in `ls $ruta_workspace`
+   do   
+      if [ -d $ruta_workspace/$i ] ; then echo $i >> "./tmp/.listclient$filetmp.tmp" ; fi
+   done
+   echo "./tmp/.listclient$filetmp.tmp"
+}
+
+function listBranch {
+   filetmp=`date +%Y%m%d%M%S`
+   for i in `ls $ruta_workspace/$1`
+   do
+      if [ -d $ruta_workspace/$1/$i ] ; then echo $i >> "./tmp/.listclientdir$filetmp.tmp" ; fi
+   done
+   echo "./tmp/.listclientdir$filetmp.tmp"
+}
+
+function listPort {
+   filetmp=`date +%Y%m%d%M%S`
+   for i in `ls $ruta_workspace/$1/$2/$ruta_branches`
+   do
+      if [ -d $ruta_workspace/$1/$2/$ruta_branches/$i ] ; then echo $i >> "./tmp/.listclientport$filetmp.tmp" ; fi
+   done
+   echo "./tmp/.listclientport$filetmp.tmp"
+}
+
+function gitInfoScript {
+   filetmp=`date +%Y%m%d%M%S`
+   cd $ruta_workspace/$1/$2
+   git-info.sh >> "$ruta_botAPI/tmp/.gitinfo$filetmp.tmp"
+   echo "$ruta_botAPI/tmp/.gitinfo$filetmp.tmp"
+}
+
+function gitUpdateScript {
+   filetmp=`date +%Y%m%d%M%S`
+   cd $ruta_workspace/$1/$2
+   git-update.sh -hash $3 > /dev/null 
+   if [ $? -eq 0 ] ; then
+       sw="0"
+   else
+       sw="1"
+   fi
+   echo "$sw"
+}
+
+function makeScript {
+   cd $ruta_workspace/$1/$2/scm/Make_EAR/*$3
+   if [ $? -eq 0 ] ; then
+       ./make.sh $3 > 2&>1 /dev/null
+       if [ $? -eq 0 ] ; then
+          sw="0"
+       else
+          sw="1"
+      fi
+   else
+     sw="1"
+   fi
+   echo "$sw"
+}
+
+function makeSchemaToolScript {
+   cd $ruta_workspace/$1/$2/scm/Make_EAR/*$3
+   if [ $? -eq 0 ] ; then
+       ./make.sh $3 s > 2&>1 /dev/null
+       if [ $? -eq 0 ] ; then
+          sw="0"
+       else
+          sw="1"
+      fi
+   else
+     sw="1"
+   fi
+   echo "$sw"
+}
+

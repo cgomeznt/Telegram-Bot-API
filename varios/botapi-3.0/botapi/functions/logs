@@ -1,0 +1,28 @@
+function logStart {
+    echo -e "INICIO $datemessagehuman, ID_BOT $id_bot, NAME_BOT $namebot, USERNAME $usernamebot, UPDATE_ID $update_id, ID_USER $message_from_id, USER_NAME $message_from_first_name, MESSAGE $message_text" >> $botapi
+}
+
+function logSend {
+    echo -e "ENVIADO $datemessagehuman, PID $1, ID_BOT $id_bot, NAME_BOT $namebot, USERNAME $usernamebot, UPDATE_ID $update_id, ID_USER $message_from_id, USER_NAME $message_from_first_name, MESSAGE $message_text" >> $botapi
+}
+
+function logRunning {
+    echo -e "EJECUTANDO $datemessagehuman, PID $1, ID_BOT $id_bot, NAME_BOT $namebot, USERNAME $usernamebot, UPDATE_ID $update_id, ID_USER $message_from_id, USER_NAME $message_from_first_name, MESSAGE $message_text" >> $botapi
+}
+
+function logFinish {
+    echo -e "FINALIZA $datemessagehuman, ID_BOT $id_bot, NAME_BOT $namebot, USERNAME $usernamebot, UPDATE_ID $update_id, ID_USER $message_from_id, USER_NAME $message_from_first_name, MESSAGE $message_text" >> $botapi
+}
+
+function logInfo {
+    echo -e "INICIO $datemessagehuman, ID_BOT $id_bot, NAME_BOT $namebot, USERNAME $usernamebot, UPDATE_ID $update_id, ID_USER $message_from_id, USER_NAME $message_from_first_name, MESSAGE $message_text" >> $botapi
+}
+
+function logWarn {
+    echo -e "WARNING $datemessagehuman, ID_BOT $id_bot, NAME_BOT $namebot, USERNAME $usernamebot, UPDATE_ID $update_id, ID_USER $message_from_id, USER_NAME $message_from_first_name, MESSAGE $message_text" >> $botapi
+}
+
+function logError {
+    echo -e "ERROR $datemessagehuman, $1, ID_BOT $id_bot, NAME_BOT $namebot, USERNAME $usernamebot, UPDATE_ID $update_id, ID_USER $message_from_id, USER_NAME $message_from_first_name, MESSAGE $message_text" >> $botapi
+}
+
