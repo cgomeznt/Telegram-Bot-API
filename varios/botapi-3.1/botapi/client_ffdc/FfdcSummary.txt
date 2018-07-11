@@ -1,0 +1,10 @@
+
+ Index  Count  Time of first Occurrence    Time of last Occurrence     Exception SourceId ProbeId
+------+------+---------------------------+---------------------------+---------------------------
+     0      6 11/07/18 13:12:29:563 GMT-04:00 11/07/18 13:12:29:888 GMT-04:00 org.omg.CORBA.TRANSIENT com.ibm.ws.orbimpl.transport.WSTransport.getConnection 448 /usr/local/bin/botapi/./client_ffdc/ffdc.4844407299186045035.txt
+     1      6 11/07/18 13:12:29:736 GMT-04:00 11/07/18 13:12:29:888 GMT-04:00 org.omg.CORBA.TRANSIENT com.ibm.ws.naming.util.WsnInitCtxFactory.getCosRootContext 1402 /usr/local/bin/botapi/./client_ffdc/ffdc.4613006047419455216.txt
+     2      2 11/07/18 13:12:29:777 GMT-04:00 11/07/18 13:12:29:796 GMT-04:00 javax.naming.ServiceUnavailableException com.ibm.ws.management.connector.rmi.RMIConnectorClient.reconnect 237 /usr/local/bin/botapi/./client_ffdc/ffdc.2498882474214349923.txt
+     3      1 11/07/18 13:12:29:796 GMT-04:00 11/07/18 13:12:29:796 GMT-04:00 java.lang.reflect.InvocationTargetException com.ibm.websphere.management.AdminClientFactory.createAdminClient 267 /usr/local/bin/botapi/./client_ffdc/ffdc.3792070738612679040.txt
+     4      2 11/07/18 13:12:29:880 GMT-04:00 11/07/18 13:12:29:888 GMT-04:00 java.io.IOException com.ibm.ws.management.connector.jsr160rmi.JSR160RMIConnectorClient.reconnect 179 /usr/local/bin/botapi/./client_ffdc/ffdc.6603463835650259069.txt
+     5      1 11/07/18 13:12:29:888 GMT-04:00 11/07/18 13:12:29:888 GMT-04:00 java.lang.reflect.InvocationTargetException com.ibm.websphere.management.AdminClientFactory.createAdminClient 275 /usr/local/bin/botapi/./client_ffdc/ffdc.4134490479303502707.txt
+------+------+---------------------------+---------------------------+---------------------------

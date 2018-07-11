@@ -1,0 +1,8 @@
+function clearVar {
+    unset `cat ./conf/* | grep -v grep | grep -v \# | awk -F"=" '{print $1}'`
+}
+
+function clearFunction {
+    unset -f `cat ./functions/* | grep -v grep | grep -v \# | grep function | awk '{print $2}'`
+}
+

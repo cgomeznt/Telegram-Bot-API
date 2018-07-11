@@ -242,6 +242,29 @@ elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/make_sche
 		rm ./tmp/make$forfile.tmp
 
         fi
+elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/work_all"` ] ; then
+        logRunning
+        cliente=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+        branch=`echo $message_text | tr -d "\"" | awk '{print $3}'`
+        puerto=`echo $message_text | tr -d "\"" | awk '{print $4}'`
+        #scmematool=`echo $message_text | tr -d "\"" | awk '{print $5}'`
+        ruta_filetmp=`modifyMessages $ruta_espere_procesando`
+        sendMessageBot $message_chat_id "`cat $ruta_filetmp`/work_all+$cliente+$branch+$puerto++el+PID:+$PIDactual"
+        rm $ruta_filetmp
+        if [ `makeValidation` -eq 1 ] ; then
+                ./bin/work_all.sh $cliente $branch $puerto s $tokenbot $message_chat_id >> "$ruta_botapi/tmp/work_all$forfile.tmp"
+                if [ $? -eq 0 ] ; then
+                        ruta_filetmp="`modifyMessages ./tmp/work_all$forfile.tmp`"
+                        sendMessageBot $message_chat_id "`cat $ruta_filetmp`"
+                        rm $ruta_filetmp
+                else
+                        ruta_filetmp=`modifyMessages $ruta_make_bad`
+                        sendMessageBot $message_chat_id "`cat $ruta_filetmp`"
+                        rm $ruta_filetmp
+                fi
+                rm ./tmp/work_all$forfile.tmp
+
+        fi
 elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/assign_ticket"` ] ; then
         logRunning
         ticket=`echo $message_text | tr -d "\"" | awk '{print $2}'`
@@ -252,12 +275,12 @@ elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/assign_ti
         if [ `assignTicketValidation` -eq 1 ] ; then
 
 	curl \
-        -D- \
-        -u 'cgomez':'America21' \
-        -X PUT \
-        --data {\"fields\":{\"customfield_10171\":{\"name\":\"$usuario\"}}} \
-        -H "Content-Tpe: application/json" \
-        "https://consisint.atlassian.net/rest/api/2/issue/$ticket"
+   	-D- \
+	   -u 'cgomez':'America21' \
+	   -X PUT \
+	   --data {\"fields\":{\"customfield_10171\":{\"name\":\"$usuario\"}}} \
+	   -H "Content-Type: application/json" \
+	   "https://consisint.atlassian.net/rest/api/2/issue/$ticket"
         ruta_filetmp=`modifyMessages $ruta_make_bad`
         sendMessageBot $message_chat_id "Se+asigno+el+ticket+$ticket+a+$usuario"
         rm $ruta_filetmp
@@ -279,3 +302,4 @@ logFinish
 rm ./tmp/pid_$PIDactual.tmp
 clearVar
 clearFunction
+

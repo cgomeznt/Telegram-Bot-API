@@ -1,0 +1,168 @@
+[11/07/18 13:12:29:781 GMT-04:00]     FFDC Exception:javax.naming.ServiceUnavailableException SourceId:com.ibm.ws.management.connector.rmi.RMIConnectorClient.reconnect ProbeId:237 Reporter:com.ibm.ws.management.connector.rmi.RMIConnectorClient@8409f745
+javax.naming.ServiceUnavailableException: A communication failure occurred while attempting to obtain an initial context with the provider URL: "corbaloc:iiop:srvscm03.consis.local:2810/WsnAdminNameService".  Make sure that any bootstrap address information in the URL is correct and that the target name server is running.  A bootstrap address with no port specification defaults to port 2809.  Possible causes other than an incorrect bootstrap address or unavailable name server include the network environment and workstation network configuration. [Root exception is org.omg.CORBA.TRANSIENT: java.net.ConnectException: Conexión rehusada:host=192.168.1.11,port=2810  vmcid: IBM  minor code: E02  completed: No]
+	at com.ibm.ws.naming.util.WsnInitCtxFactory.mapInitialReferenceFailure(WsnInitCtxFactory.java:2373)
+	at com.ibm.ws.naming.util.WsnInitCtxFactory.getCosRootContext(WsnInitCtxFactory.java:1403)
+	at com.ibm.ws.naming.util.WsnInitCtxFactory.getRootContextFromServer(WsnInitCtxFactory.java:1089)
+	at com.ibm.ws.naming.util.WsnInitCtxFactory.getRootJndiContext(WsnInitCtxFactory.java:940)
+	at com.ibm.ws.naming.util.WsnInitCtxFactory.getInitialContextInternal(WsnInitCtxFactory.java:615)
+	at com.ibm.ws.naming.util.WsnInitCtx.getContext(WsnInitCtx.java:128)
+	at com.ibm.ws.naming.util.WsnInitCtx.getContextIfNull(WsnInitCtx.java:765)
+	at com.ibm.ws.naming.util.WsnInitCtx.lookup(WsnInitCtx.java:164)
+	at com.ibm.ws.naming.util.WsnInitCtx.lookup(WsnInitCtx.java:179)
+	at javax.naming.InitialContext.lookup(InitialContext.java:436)
+	at com.ibm.ws.management.connector.rmi.RMIConnectorClient.reconnect(RMIConnectorClient.java:317)
+	at com.ibm.ws.management.connector.rmi.RMIConnectorClient.reconnect(RMIConnectorClient.java:233)
+	at com.ibm.ws.management.connector.rmi.RMIConnectorClient.<init>(RMIConnectorClient.java:141)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:56)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:39)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:527)
+	at com.ibm.websphere.management.AdminClientFactory.createAdminClientPrivileged(AdminClientFactory.java:664)
+	at com.ibm.websphere.management.AdminClientFactory.access$000(AdminClientFactory.java:127)
+	at com.ibm.websphere.management.AdminClientFactory$1.run(AdminClientFactory.java:210)
+	at com.ibm.ws.security.util.AccessController.doPrivileged(AccessController.java:63)
+	at com.ibm.websphere.management.AdminClientFactory.createAdminClient(AdminClientFactory.java:206)
+	at com.ibm.ws.management.connector.ConnectorHelper.tryProtocol(ConnectorHelper.java:643)
+	at com.ibm.ws.management.connector.ConnectorHelper.createConnector(ConnectorHelper.java:588)
+	at com.ibm.ws.management.tools.WsServerStop.runTool(WsServerStop.java:372)
+	at com.ibm.ws.management.tools.AdminTool.executeUtility(AdminTool.java:269)
+	at com.ibm.ws.management.tools.WsServerStop.main(WsServerStop.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:60)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:37)
+	at java.lang.reflect.Method.invoke(Method.java:611)
+	at com.ibm.wsspi.bootstrap.WSLauncher.launchMain(WSLauncher.java:234)
+	at com.ibm.wsspi.bootstrap.WSLauncher.main(WSLauncher.java:96)
+	at com.ibm.wsspi.bootstrap.WSLauncher.run(WSLauncher.java:77)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:60)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:37)
+	at java.lang.reflect.Method.invoke(Method.java:611)
+	at org.eclipse.equinox.internal.app.EclipseAppContainer.callMethodWithException(EclipseAppContainer.java:587)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:198)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:369)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:60)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:37)
+	at java.lang.reflect.Method.invoke(Method.java:611)
+	at org.eclipse.core.launcher.Main.invokeFramework(Main.java:340)
+	at org.eclipse.core.launcher.Main.basicRun(Main.java:282)
+	at org.eclipse.core.launcher.Main.run(Main.java:981)
+	at com.ibm.wsspi.bootstrap.WSPreLauncher.launchEclipse(WSPreLauncher.java:394)
+	at com.ibm.wsspi.bootstrap.WSPreLauncher.main(WSPreLauncher.java:157)
+Caused by: org.omg.CORBA.TRANSIENT: java.net.ConnectException: Conexión rehusada:host=192.168.1.11,port=2810  vmcid: IBM  minor code: E02  completed: No
+	at com.ibm.CORBA.transport.TransportConnectionBase.connect(TransportConnectionBase.java:442)
+	at com.ibm.ws.orbimpl.transport.WSTransport.getConnection(WSTransport.java:437)
+	at com.ibm.CORBA.transport.TransportBase.getConnection(TransportBase.java:188)
+	at com.ibm.rmi.iiop.TransportManager.get(TransportManager.java:100)
+	at com.ibm.rmi.iiop.GIOPImpl.getConnection(GIOPImpl.java:134)
+	at com.ibm.rmi.iiop.GIOPImpl.locate(GIOPImpl.java:230)
+	at com.ibm.rmi.corba.Corbaloc.locateUsingINS(Corbaloc.java:307)
+	at com.ibm.rmi.corba.Corbaloc.resolve(Corbaloc.java:378)
+	at com.ibm.rmi.corba.ORB.objectURLToObject(ORB.java:3805)
+	at com.ibm.CORBA.iiop.ORB.objectURLToObject(ORB.java:3377)
+	at com.ibm.rmi.corba.ORB.string_to_object(ORB.java:3700)
+	at com.ibm.ws.naming.util.WsnInitCtxFactory.stringToObject(WsnInitCtxFactory.java:1646)
+	at com.ibm.ws.naming.util.WsnInitCtxFactory.getCosRootContext(WsnInitCtxFactory.java:1339)
+	... 51 more
+Caused by: java.net.ConnectException: Conexión rehusada
+	at java.net.PlainSocketImpl.doConnect(PlainSocketImpl.java:412)
+	at java.net.PlainSocketImpl.connectToAddress(PlainSocketImpl.java:271)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:258)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:376)
+	at java.net.Socket.connect(Socket.java:546)
+	at com.ibm.ws.orbimpl.transport.WSTCPTransportConnection.createSocket(WSTCPTransportConnection.java:313)
+	at com.ibm.CORBA.transport.TransportConnectionBase.connect(TransportConnectionBase.java:364)
+	... 63 more
+
+CapturedDataElements begin
+arg BEGIN:com.ibm.ws.ffdc.impl.DMAdapter@6025002d
+Reporter BEGIN:com.ibm.ws.management.connector.rmi.RMIConnectorClient@8409f745
+ com.ibm.ws.management.connector.rmi.RMIConnectorClient::bundleName:com.ibm.ws.management.resources.connector
+ com.ibm.ws.management.connector.rmi.RMIConnectorClient::tc BEGIN:com.ibm.ejs.ras.TraceComponent@6c3b2d94
+  com.ibm.ejs.ras.TraceElement::ivLevel:10
+  com.ibm.ejs.ras.TraceElement::ivName:com.ibm.ws.management.connector.rmi.RMIConnectorClient
+  com.ibm.ejs.ras.TraceElement::ivDebugEnabled:false
+  com.ibm.ejs.ras.TraceElement::ivEventEnabled:false
+  com.ibm.ejs.ras.TraceElement::ivEntryEnabled:false
+  com.ibm.ejs.ras.TraceElement::ivDetailEnabled:false
+  com.ibm.ejs.ras.TraceElement::ivConfigEnabled:false
+  com.ibm.ejs.ras.TraceElement::ivInfoEnabled:true
+  com.ibm.ejs.ras.TraceElement::ivServiceEnabled:true
+  com.ibm.ejs.ras.TraceElement::ivWarningEnabled:true
+  com.ibm.ejs.ras.TraceElement::ivErrorEnabled:true
+  com.ibm.ejs.ras.TraceElement::ivFatalEnabled:true
+  com.ibm.ejs.ras.TraceComponent::defaultMessageFile:com.ibm.ejs.resources.seriousMessages
+  com.ibm.ejs.ras.TraceComponent::EXTENSION_NAME_DPID:DiagnosticProvider
+  com.ibm.ejs.ras.TraceComponent::ivDumpEnabled:false
+  com.ibm.ejs.ras.TraceComponent::ivResourceBundleName:com.ibm.ws.management.resources.connector
+  com.ibm.ejs.ras.TraceComponent::ivLogger:null
+  com.ibm.ejs.ras.TraceComponent::ivDiagnosticProviderID:null
+  com.ibm.ejs.ras.TraceComponent::anyTracingEnabled:false
+  END:com.ibm.ejs.ras.TraceComponent@6c3b2d94
+
+ com.ibm.ws.management.connector.rmi.RMIConnectorClient::nls BEGIN:com.ibm.ejs.ras.TraceNLS@8b210b84
+  com.ibm.ejs.ras.TraceNLS::tc BEGIN:com.ibm.ejs.ras.TraceComponent@2797cfbd
+   com.ibm.ejs.ras.TraceElement::ivLevel:10
+   com.ibm.ejs.ras.TraceElement::ivName:com.ibm.ejs.ras.TraceNLS
+   com.ibm.ejs.ras.TraceElement::ivDebugEnabled:false
+   com.ibm.ejs.ras.TraceElement::ivEventEnabled:false
+   com.ibm.ejs.ras.TraceElement::ivEntryEnabled:false
+   com.ibm.ejs.ras.TraceElement::ivDetailEnabled:false
+   com.ibm.ejs.ras.TraceElement::ivConfigEnabled:false
+   com.ibm.ejs.ras.TraceElement::ivInfoEnabled:true
+   com.ibm.ejs.ras.TraceElement::ivServiceEnabled:true
+   com.ibm.ejs.ras.TraceElement::ivWarningEnabled:true
+   com.ibm.ejs.ras.TraceElement::ivErrorEnabled:true
+   com.ibm.ejs.ras.TraceElement::ivFatalEnabled:true
+   com.ibm.ejs.ras.TraceComponent::defaultMessageFile:com.ibm.ejs.resources.seriousMessages
+   com.ibm.ejs.ras.TraceComponent::EXTENSION_NAME_DPID:DiagnosticProvider
+   com.ibm.ejs.ras.TraceComponent::ivDumpEnabled:false
+   com.ibm.ejs.ras.TraceComponent::ivResourceBundleName:com.ibm.ejs.ras.resources.RasMessages
+   com.ibm.ejs.ras.TraceComponent::ivLogger:null
+   com.ibm.ejs.ras.TraceComponent::ivDiagnosticProviderID:null
+   com.ibm.ejs.ras.TraceComponent::anyTracingEnabled:false
+   END:com.ibm.ejs.ras.TraceComponent@2797cfbd
+
+  com.ibm.ejs.ras.TraceNLS::nullKey:null Key
+  com.ibm.ejs.ras.TraceNLS::svNullBundleName:Resource Bundle name is null, key = {0}
+  com.ibm.ejs.ras.TraceNLS::svBundleNotLoaded:Unable to load ResourceBundle {0}
+  com.ibm.ejs.ras.TraceNLS::svNullKeyMessage:Null key passed while using ResourceBundle {0}
+  com.ibm.ejs.ras.TraceNLS::svMalformedMessage:No message text associated with key {0} in bundle {1}
+  com.ibm.ejs.ras.TraceNLS::sbConvertMessageIds:false
+  com.ibm.ejs.ras.TraceNLS::svMessageIdPropertyName:com.ibm.websphere.logging.messageId.version
+  com.ibm.ejs.ras.TraceNLS::finder:null
+  com.ibm.ejs.ras.TraceNLS::ivBundleName:com.ibm.ws.management.resources.connector
+  END:com.ibm.ejs.ras.TraceNLS@8b210b84
+
+ com.ibm.ws.management.connector.rmi.RMIConnectorClient::connector:null
+ com.ibm.ws.management.connector.rmi.RMIConnectorClient::rmiListener:null
+ com.ibm.ws.management.connector.rmi.RMIConnectorClient::targetCertificate:null
+ com.ibm.ws.management.connector.rmi.RMIConnectorClient::proxyProps BEGIN:java.util.Properties@1bda46e0
+  {
+  key:java.naming.provider.url
+  value:iiop://srvscm03.consis.local:2810
+  key:port
+  value:2810
+  key:securityEnabled
+  value:false
+  key:type
+  value:RMI
+  key:host
+  value:srvscm03.consis.local
+  key:com.ibm.websphere.naming.jndicache.cacheobject
+  value:none
+  }
+  END:java.util.Properties@1bda46e0
+
+ com.ibm.ws.management.connector.rmi.RMIConnectorClient::online:false
+ com.ibm.ws.management.connector.rmi.RMIConnectorClient::autoAcceptSigner:false
+ com.ibm.ws.management.connector.rmi.RMIConnectorClient::serverSupportsJMXConnectorContext:false
+ END:com.ibm.ws.management.connector.rmi.RMIConnectorClient@8409f745
+
+END:com.ibm.ws.ffdc.impl.DMAdapter@6025002d
+
+CapturedDataElements end

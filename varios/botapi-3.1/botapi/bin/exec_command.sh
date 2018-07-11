@@ -101,6 +101,78 @@ elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/port_stop
                         rm $ruta_filetmp
                 fi
         fi
+elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/port_stop"` ] ; then
+       logRunning
+       if [ `portStatusValidation` -eq 1 ] ; then
+                puerto=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+                ruta_filetmp=`modifyMessages $ruta_espere_procesando`
+                sendMessageBot $message_chat_id "`cat $ruta_filetmp`/port_stop+$puerto++el+PID:+$PIDactual"
+                rm $ruta_filetmp
+                $ruta_scripts/port.sh stop $puerto -c
+                if [ $? -eq 0 ] ; then
+                        ruta_filetmp=`modifyMessages $ruta_port_stop_ok`
+                        sendMessageBot $message_chat_id "`cat $ruta_filetmp`$puerto"
+                        rm $ruta_filetmp
+                else
+                        ruta_filetmp=`modifyMessages $ruta_port_stop_bad`
+                        sendMessageBot $message_chat_id "`cat $ruta_filetmp`$puerto"
+                        rm $ruta_filetmp
+                fi
+        fi
+elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/port_was_start"` ] ; then
+       logRunning
+       if [ `portWASStatusValidation` -eq 1 ] ; then
+                puerto=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+                ruta_filetmp=`modifyMessages $ruta_espere_procesando`
+                sendMessageBot $message_chat_id "`cat $ruta_filetmp`/port_was_start+$puerto+el+PID:+$PIDactual"
+                rm $ruta_filetmp
+                $ruta_scripts/port_was.sh start $puerto 
+                if [ $? -eq 0 ] ; then
+                        ruta_filetmp=`modifyMessages $ruta_port_start_ok`
+                        sendMessageBot $message_chat_id "`cat $ruta_filetmp`$puerto"
+                        rm $ruta_filetmp
+                else
+                        ruta_filetmp=`modifyMessages $ruta_port_start_bad`
+                        sendMessageBot $message_chat_id "`cat $ruta_filetmp`$puerto"
+                        rm $ruta_filetmp
+                fi
+        fi
+elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/port_was_stop"` ] ; then
+       logRunning
+       if [ `portWASStatusValidation` -eq 1 ] ; then
+                puerto=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+                ruta_filetmp=`modifyMessages $ruta_espere_procesando`
+                sendMessageBot $message_chat_id "`cat $ruta_filetmp`/port_was_start+$puerto+el+PID:+$PIDactual"
+                rm $ruta_filetmp
+                $ruta_scripts/port_was.sh stop $puerto 
+                if [ $? -eq 0 ] ; then
+                        ruta_filetmp=`modifyMessages $ruta_port_stop_ok`
+                        sendMessageBot $message_chat_id "`cat $ruta_filetmp`$puerto"
+                        rm $ruta_filetmp
+                else
+                        ruta_filetmp=`modifyMessages $ruta_port_stop_bad`
+                        sendMessageBot $message_chat_id "`cat $ruta_filetmp`$puerto"
+                        rm $ruta_filetmp
+                fi
+        fi
+elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/port_was_update"` ] ; then
+       logRunning
+       if [ `portWASStatusValidation` -eq 1 ] ; then
+                puerto=`echo $message_text | tr -d "\"" | awk '{print $2}'`
+                ruta_filetmp=`modifyMessages $ruta_espere_procesando`
+                sendMessageBot $message_chat_id "`cat $ruta_filetmp`/port_was_update+$puerto+el+PID:+$PIDactual"
+                rm $ruta_filetmp
+                $ruta_scripts/port_was.sh update $puerto
+                if [ $? -eq 0 ] ; then
+                        ruta_filetmp=`modifyMessages $ruta_port_update_ok`
+                        sendMessageBot $message_chat_id "`cat $ruta_filetmp`$puerto"
+                        rm $ruta_filetmp
+                else
+                        ruta_filetmp=`modifyMessages $ruta_port_update_bad`
+                        sendMessageBot $message_chat_id "`cat $ruta_filetmp`$puerto"
+                        rm $ruta_filetmp
+                fi
+        fi
 elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/list_client"` ] ; then
 	logRunning
 	ruta_filetmp=`modifyMessages $ruta_espere_procesando`
@@ -231,15 +303,16 @@ elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/make_sche
                 if [ $? -eq 0 ] ; then
                         cd $ruta_botapi
                         ruta_filetmp="`modifyMessages ./tmp/make$forfile.tmp`"
+                        sendMessageBot $message_chat_id "Culmino el make"
                         sendMessageBot $message_chat_id "`cat $ruta_filetmp`"
-                        rm $ruta_filetmp
+                        #rm $ruta_filetmp
                 else
                         cd $ruta_botapi
                         ruta_filetmp=`modifyMessages $ruta_make_bad`
                         sendMessageBot $message_chat_id "`cat $ruta_filetmp`"
-                        rm $ruta_filetmp
+                        #rm $ruta_filetmp
                 fi
-		rm ./tmp/make$forfile.tmp
+		#rm ./tmp/make$forfile.tmp
 
         fi
 elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/work_all"` ] ; then
@@ -247,12 +320,12 @@ elif [ `echo $message_text | tr -d "\"" | awk '{print $1}' | grep -w "/work_all"
         cliente=`echo $message_text | tr -d "\"" | awk '{print $2}'`
         branch=`echo $message_text | tr -d "\"" | awk '{print $3}'`
         puerto=`echo $message_text | tr -d "\"" | awk '{print $4}'`
-        #scmematool=`echo $message_text | tr -d "\"" | awk '{print $5}'`
+        schematool=`echo $message_text | tr -d "\"" | awk '{print $5}'`
         ruta_filetmp=`modifyMessages $ruta_espere_procesando`
         sendMessageBot $message_chat_id "`cat $ruta_filetmp`/work_all+$cliente+$branch+$puerto++el+PID:+$PIDactual"
         rm $ruta_filetmp
-        if [ `makeValidation` -eq 1 ] ; then
-                ./bin/work_all.sh $cliente $branch $puerto s $tokenbot $message_chat_id >> "$ruta_botapi/tmp/work_all$forfile.tmp"
+        if [ `workValidation` -eq 1 ] ; then
+                ./bin/work_all.sh $cliente $branch $puerto $schematool $tokenbot $message_chat_id >> "$ruta_botapi/tmp/work_all$forfile.tmp"
                 if [ $? -eq 0 ] ; then
                         ruta_filetmp="`modifyMessages ./tmp/work_all$forfile.tmp`"
                         sendMessageBot $message_chat_id "`cat $ruta_filetmp`"
