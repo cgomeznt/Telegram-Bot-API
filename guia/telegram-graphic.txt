@@ -15,6 +15,7 @@
 # Modificado por: Carlos Gomez Gomez
 ##########################################################################
 
+
 MAIN_DIRECTORY="/usr/lib/zabbix/alertscripts/"
 
 USER=$1
